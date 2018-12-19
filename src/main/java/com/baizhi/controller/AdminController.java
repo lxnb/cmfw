@@ -1,11 +1,15 @@
 package com.baizhi.controller;
 
+import com.baizhi.conf.CreateValidateCode;
 import com.baizhi.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("Admin")
@@ -25,4 +29,18 @@ public class AdminController {
         }
     }
 
+    @RequestMapping("code")
+    public void CodeImg(HttpSession session, HttpServletResponse response) {
+        CreateValidateCode code = new CreateValidateCode();
+        String num = code.getCode();
+        session.setAttribute("code", num);
+        try {
+            ServletOutputStream out = response.getOutputStream();
+            code.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+
