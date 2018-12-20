@@ -44,8 +44,15 @@ public class CmfwApplicationTests {
         admin.setName("张三");
         List<Admin> select = mapper3.select(admin);
         System.out.println(select);
-
-
     }
+
+    @Test
+    public void test3() {
+        Admin admin = new Admin();
+        admin.setName("张三");
+        List<Admin> select = mapper3.select(admin);
+        System.out.println(select);
+    }
+
 }
 

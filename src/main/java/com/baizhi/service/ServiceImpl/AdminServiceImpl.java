@@ -17,11 +17,12 @@ public class AdminServiceImpl implements AdminService {
     private AdminMapper mapper;
 
     @Override
-    public void adminLogin(String name, String password, HttpSession session) {
+    public void adminLogin(String name, String password, HttpSession session, String code) {
         Admin admin = new Admin();
         admin.setName(name);
-        Admin select = (Admin) mapper.select(admin);
+        Admin select = mapper.selectOne(admin);
         try {
+            if (!session.getAttribute("code").equals(code.toLowerCase())) throw new RuntimeException("验证码错误");
             if (select == null) throw new RuntimeException("用户名不存在");
             if (!select.getPassword().equals(password)) throw new RuntimeException("密码输入错误");
             session.setAttribute("admin", select);

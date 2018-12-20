@@ -6,7 +6,6 @@
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
     <meta http-equiv="description" content="this is my page">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
     <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="css/common.css" type="text/css"></link>
     <link rel="stylesheet" href="css/login.css" type="text/css"></link>
@@ -17,12 +16,26 @@
         $(function () {
             //点击更换验证码：
             $("#captchaImage").click(function () {//点击更换验证码
-                alert("自己做");
+                $("#captchaImage").prop("src", "${pageContext.request.contextPath }/Admin/code?time+" + new Date());
             });
 
             //  form 表单提交
             $("#loginForm").bind("submit", function () {
-                alert("自己做");
+                var aname = $("#adminname").val();
+                var apassword = $("#adminpass").val();
+                var acode = $("#enCode").val();
+                $.post("${pageContext.request.contextPath }/Admin/login", {
+                    name: aname,
+                    password: apassword,
+                    code: acode
+                }, function (res) {
+                    console.info("返回")
+                    if (res == "") {
+                        location.href = "${pageContext.request.contextPath }/main/main.jsp";
+                    } else {
+                        $("#loginspan").text(res);
+                    }
+                });
                 return false;
             });
         });
@@ -31,7 +44,7 @@
 <body>
 
 <div class="login">
-    <form id="loginForm" action="../back/index.html" method="post">
+    <form id="loginForm" action="${pageContext.request.contextPath }/Admin/login" method="post">
 
         <table>
             <tbody>
@@ -43,7 +56,7 @@
                     用户名:
                 </th>
                 <td>
-                    <input type="text" name="user.name" class="text" value="xxx" maxlength="20"/>
+                    <input id="adminname" type="text" name="name" class="text" maxlength="20"/>
                 </td>
             </tr>
             <tr>
@@ -51,7 +64,7 @@
                     密&nbsp;&nbsp;&nbsp;码:
                 </th>
                 <td>
-                    <input type="password" name="user.password" class="text" value="xxx" maxlength="20"
+                    <input id="adminpass" type="password" name="password" class="text" maxlength="20"
                            autocomplete="off"/>
                 </td>
             </tr>
@@ -60,14 +73,14 @@
                 <td>&nbsp;</td>
                 <th>验证码:</th>
                 <td>
-                    <input type="text" id="enCode" name="enCode" class="text captcha" maxlength="4" autocomplete="off"/>
-                    <img id="captchaImage" class="captchaImage" src="${pageContext.request.contextPath }/"
+                    <input type="text" id="enCode" name="code" class="text captcha" maxlength="4" autocomplete="off"/>
+                    <img id="captchaImage" class="captchaImage" src="${pageContext.request.contextPath }/Admin/code"
                          title="点击更换验证码"/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    &nbsp;
+                    &nbsp;<span id="loginspan"></span>
                 </td>
                 <th>
                     &nbsp;

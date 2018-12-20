@@ -14,6 +14,7 @@ public class MenuController {
     @Autowired
     private MenuService service;
 
+
     @RequestMapping("queryMenu")
     public List<Menu> queryMenu() {
         List<Menu> menus = service.queryMenu();

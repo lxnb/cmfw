@@ -1,6 +1,7 @@
 package com.baizhi.service.ServiceImpl;
 
 import com.baizhi.entity.Menu;
+import com.baizhi.mapper.MenuMapper;
 import com.baizhi.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,11 @@ import java.util.List;
 @Transactional
 public class MenuServiceImpl implements MenuService {
     @Autowired
-    private MenuService service;
+    private MenuMapper mapper;
 
     @Override
     public List<Menu> queryMenu() {
-        List<Menu> menus = service.queryMenu();
+        List<Menu> menus = mapper.queryMenu();
         return menus;
     }
 }

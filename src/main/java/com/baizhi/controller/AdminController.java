@@ -5,6 +5,7 @@ import com.baizhi.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -19,10 +20,11 @@ public class AdminController {
     private AdminService service;
 
     @RequestMapping(value = "login", produces = "text/plain;charset=utf-8")
-    public String adminLogin(String name, String password, HttpSession session) {
+    @ResponseBody
+    public String adminLogin(String name, String password, HttpSession session, String code) {
         try {
-            service.adminLogin(name, password, session);
-            return "OK";
+            service.adminLogin(name, password, session, code);
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
@@ -36,6 +38,7 @@ public class AdminController {
         session.setAttribute("code", num);
         try {
             ServletOutputStream out = response.getOutputStream();
+            System.out.println(num);
             code.write(out);
         } catch (IOException e) {
             e.printStackTrace();

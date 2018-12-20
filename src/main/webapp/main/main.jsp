@@ -6,11 +6,61 @@
     <title>持名法州主页</title>
     <link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../themes/IconExtension.css">
+    <link rel="stylesheet" type="text/css" href="../themes/icon.css">
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript">
         <!--菜单处理-->
+        //Js初始化标签
+        $(function () {
+            $("#aa").accordion({
+                animate: true,
+                fit: true,
+            })
+        })
+
+        //ajax异步请求获取列表
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath}/Menu/queryMenu",
+            success: function (data) {
+                if (data) {
+                    $.each(data, function (index, item) {
+                        //遍历，index为索引,item为单个json对象
+                        //调用分类属性add,添加分类
+                        var bcd = "";
+                        $.each(item.menus, function (index1, ii) {
+                            var ty = ii.iconcls;
+                            bcd += "<p style='text-align: center'><a id=\"btn\" href=\"#\" class=\"easyui-linkbutton\" onclick=\"addTabs('" + ii.title + "','" + ii.iconcls + "','" + ii.url + "')\" data-options=\"iconCls:'" + ty + "'\">" + ii.title + "</a></p>";
+                        })
+                        $("#aa").accordion("add", {
+                            title: item.title,
+                            iconCls: item.iconcls,
+                            content: bcd,
+                            selected: false
+                        })
+                    })
+                }
+            }
+        })
+
+        function addTabs(title, iconcls, url) {
+            var a = $("#tt").tabs("exists", title)
+            console.info(iconcls)
+            if (a) {
+                $("#tt").tabs("select", title)
+            } else {
+                $('#tt').tabs('add', {
+                    title: title,
+                    iconCls: iconcls,
+                    href: "${pageContext.request.contextPath}" + url,
+                    selected: true,
+                    closable: true
+
+                });
+            }
+        }
     </script>
 
 </head>
