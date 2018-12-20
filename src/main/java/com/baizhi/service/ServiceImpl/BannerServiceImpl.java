@@ -51,12 +51,13 @@ public class BannerServiceImpl implements BannerService {
         try {
             ServletContext servlet = session.getServletContext();
             String realPath = servlet.getRealPath("/myimg");
+            System.out.println(realPath);
             //目标文件
             Long time = new Date().getTime();
-            File descFile = new File(realPath + "/" + time + file.getOriginalFilename());
+            File descFile = new File(realPath + "/" + time + "-" + file.getOriginalFilename());
             //上传
             file.transferTo(descFile);
-            Banner banner = new Banner(null, title, "/myimg/" + time + file.getOriginalFilename(), "N", new Date(), description);
+            Banner banner = new Banner(null, title, "/myimg/" + time + "-" + file.getOriginalFilename(), "N", new Date(), description);
             mapper.insert(banner);
         } catch (IOException e) {
             e.printStackTrace();

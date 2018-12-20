@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <script type="text/javascript">
-
     $(function () {
         var toolbar = [{
             iconCls: 'icon-add',
@@ -60,7 +59,7 @@
                 {field: 'title', title: '图片名', width: 100, align: 'center'},
                 {field: 'imgPath', title: '图片路径', width: 100, align: 'center'},
                 {
-                    field: 'status', title: '图片状态', width: 100, align: 'center', editor: {
+                    field: 'status', title: '图片状态', width: 100, align: 'center', formatter: aaa, editor: {
                         type: "text",
                         options: {required: true}
                     }
@@ -103,6 +102,14 @@
         });
 
     })
+
+    function aaa(value, row, index) {
+        if (value == "Y") {
+            return "前台显示";
+        } else {
+            return "前台未显示";
+        }
+    }
 </script>
 <div id="insertprodiv"></div>
 <table id="dg"></table>

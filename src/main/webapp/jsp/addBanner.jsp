@@ -33,7 +33,7 @@
                                     msg: "添加失败,请稍后再试"
                                 });
                         }
-                        $("#dg").datagrid("reload");
+                        $("#dg").datagrid("load");
                     }
                 });
             }
