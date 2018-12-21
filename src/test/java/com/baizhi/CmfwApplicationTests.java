@@ -1,13 +1,8 @@
 package com.baizhi;
 
-import com.baizhi.entity.Admin;
-import com.baizhi.entity.Banner;
-import com.baizhi.entity.Menu;
-import com.baizhi.entity.User;
-import com.baizhi.mapper.AdminMapper;
-import com.baizhi.mapper.BannerMapper;
-import com.baizhi.mapper.MenuMapper;
-import com.baizhi.mapper.UserMapper;
+import com.baizhi.entity.*;
+import com.baizhi.mapper.*;
+import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +26,10 @@ public class CmfwApplicationTests {
     private AdminMapper mapper3;
     @Autowired
     private BannerMapper mapper4;
+    @Autowired
+    private AlbumMapper mapper5;
+    @Autowired
+    private ChapterMapper mapper6;
 
     @Test
     public void contextLoads() {
@@ -85,6 +84,19 @@ public class CmfwApplicationTests {
         em.createCriteria().andAllEqualTo(banner);
         List<Banner> banners = mapper4.selectByExample(em);
         System.out.println(banners);
+    }
+
+
+    @Test
+    public void test8() {
+        PageHelper.startPage(1, 2);
+        List<Album> albums = mapper5.queryAlbum();
+        System.out.println(albums);
+    }
+
+    @Test
+    public void test9() {
+
     }
 }
 

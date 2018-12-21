@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.mapper.AlbumMapper">
+
+    <resultMap id="d1" type="Album">
+        <id column="aid" property="id"/>
+        <result column="atitle" property="title"/>
+        <result column="acount" property="count"/>
+        <result column="aimg" property="coverImg"/>
+        <result column="ascore" property="score"/>
+        <result column="athor" property="author"/>
+        <result column="abro" property="broadcast"/>
+        <result column="abf" property="brief"/>
+        <result column="adate" property="pubDate"/>
+        <collection property="children" ofType="Chapter">
+            <id column="bid" property="id"/>
+            <result column="btitle" property="title"/>
+            <result column="bsize" property="size"/>
+            <result column="bd" property="duration"/>
+            <result column="burl" property="url"/>
+            <result column="bup" property="uploadDate"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryAlbum" resultMap="d1">
+        select a.id          aid,
+               a.title       atitle,
+               a.count       acount,
+               a.cover_img   aimg,
+               a.score       ascore,
+               a.author      athor,
+               a.broadcast   abro,
+               a.brief       abf,
+               a.pub_date    adate,
+               b.id          bid,
+               b.title       btitle,
+               b.size        bsize,
+               b.duration    bd,
+               b.url         burl,
+               b.upload_date bup
+        from album a
+                 left join chapter b
+                           on a.id = b.album_id
+    </select>
+</mapper>
