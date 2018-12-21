@@ -16,10 +16,11 @@ public class ChapterController {
     private ChapterService service;
 
     @RequestMapping("insertChapter")
-    public String insertChapter(HttpSession session, MultipartFile file, Chapter chapter, String id) {
+    public String insertChapter(HttpSession session, MultipartFile file, Chapter chapter) {
         try {
             service.insertChapter(session, file, chapter);
-            System.out.println("dawdawdw" + id);
+            System.out.println("dawdawdw" + chapter.getAlbumId());
+            service.insertChapter(session, file, chapter);
             return null;
         } catch (Exception e) {
             e.printStackTrace();

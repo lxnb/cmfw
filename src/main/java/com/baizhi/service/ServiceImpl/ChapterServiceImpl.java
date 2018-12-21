@@ -59,14 +59,14 @@ public class ChapterServiceImpl implements ChapterService {
                 m = encoder.getInfo(files);
                 s = m.getDuration();
                 istime = s / 60000 + "分" + (s / 1000 - s / 60000 * 60) + "秒！";
-                System.out.println("此视频时长为:" + s / 60000 + "分" + (s / 1000 - s / 60000 * 60) + "秒！");
+                System.out.println("此视频时长为:" + s / 60000 + "分" + (s / 1000 - s / 60000 * 60) + "秒");
             } catch (EncoderException e) {
                 e.printStackTrace();
             }
             chapter.setId(null);
             chapter.setSize(size);
             chapter.setDuration(istime);
-            chapter.setUrl("myradio" + "/" + time + "-" + file.getOriginalFilename());
+            chapter.setUrl("/myradio/" + time + "-" + file.getOriginalFilename());
             chapter.setUploadDate(new Date());
             mapper.insert(chapter);
         } catch (IOException e) {

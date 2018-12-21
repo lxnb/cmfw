@@ -21,6 +21,10 @@
             var row = $("#album").treegrid("getSelected");
             if (row != null) {
                 var aa = $("#album").treegrid("getRoot");
+                console.log(aa);
+                if (aa == null) {
+                    alert("请选择专辑")
+                }
                 album = aa.id;
                 $("#insertchapterdiv").dialog("open");
             } else {

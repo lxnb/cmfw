@@ -48,7 +48,7 @@
 
 </script>
 <form method="post" id="insertchapter" enctype="multipart/form-data">
-    <input id="albumidaa" type="text" style="display:none" name="id"/><br/>
+    <input id="albumidaa" type="text" style="display:none" name="albumId"/><br/>
     章节名：<input name="title" id="chaptername" type="text"/><br/>
     上传音频：<input name="file" id="xixi" type="file"/><br/>
     <input type="button" value="添加" id="insertchapterbtn"/><input type="button" id="insertchapterbtn2" value="重置"/>
