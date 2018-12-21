@@ -60,33 +60,66 @@
                 {field: 'imgPath', title: '图片路径', width: 100, align: 'center'},
                 {
                     field: 'status', title: '图片状态', width: 100, align: 'center', formatter: aaa, editor: {
-                        type: "text",
-                        options: {required: true}
+                        type: 'combobox',
+                        options: {
+                            editable: false,
+                            valueField: 'label',
+                            textField: 'value',
+                            data: [{
+                                label: 'Y',
+                                value: '前台显示'
+                            }, {
+                                label: 'N',
+                                value: '前台不显示'
+                            }]
+                        }
                     }
                 },
-                {field: 'pubDate', title: '上传时间', width: 100, align: 'center'},
-                {field: 'description', title: '图片描述', width: 100, align: 'center'}
+                {
+                    field: 'pubDate', title:
+                        '上传时间', width:
+                        100, align:
+                        'center'
+                }
+                ,
+                {
+                    field: 'description', title:
+                        '图片描述', width:
+                        100, align:
+                        'center'
+                }
             ]],
             fitColumns: true,
-            fit: true,
-            pagination: true,
-            rownumbers: true,
-            striped: true,
-            pageSize: 4,
-            pageList: [2, 4, 6, 8],
-            toolbar: toolbar,
-            view: detailview,
-            detailFormatter: function (rowIndex, rowData) {
-                return '<table><tr>' +
-                    '<td rowspan=2 style="border:0"><img src="${pageContext.request.contextPath}' + rowData.imgPath + '" style="height:50px;"></td>' +
-                    '<td style="border:0">' +
-                    '<p>图片名: ' + rowData.title + '</p>' +
-                    '<p>图片简介: ' + rowData.description + '</p>' +
-                    '</td>' +
-                    '</tr></table>';
-            }
+            fit:
+                true,
+            pagination:
+                true,
+            rownumbers:
+                true,
+            striped:
+                true,
+            pageSize:
+                4,
+            pageList:
+                [2, 4, 6, 8],
+            toolbar:
+            toolbar,
+            view:
+            detailview,
+            detailFormatter:
 
-        });
+                function (rowIndex, rowData) {
+                    return '<table><tr>' +
+                        '<td rowspan=2 style="border:0"><img src="${pageContext.request.contextPath}' + rowData.imgPath + '" style="height:50px;"></td>' +
+                        '<td style="border:0">' +
+                        '<p>图片名: ' + rowData.title + '</p>' +
+                        '<p>图片简介: ' + rowData.description + '</p>' +
+                        '</td>' +
+                        '</tr></table>';
+                }
+
+        })
+        ;
 
         $("#insertprodiv").dialog({
             closed: "true",
@@ -102,14 +135,15 @@
         });
 
     })
-
     function aaa(value, row, index) {
         if (value == "Y") {
             return "前台显示";
         } else {
-            return "前台未显示";
+            return "前台不显示";
         }
     }
+
+
 </script>
 <div id="insertprodiv"></div>
 <table id="dg"></table>
