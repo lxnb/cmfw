@@ -32,4 +32,14 @@ public class AlbumController<p> {
             return e.getMessage();
         }
     }
+
+
+    @RequestMapping("queryOneAlbum")
+    public List<Album> queryOneAlbum(String id) {
+        List<Album> album = service.queryOneAlbum(id);
+        System.out.println(album);
+        return album;
+    }
+
+
 }

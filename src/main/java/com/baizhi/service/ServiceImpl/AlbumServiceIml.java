@@ -12,6 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -52,5 +53,15 @@ public class AlbumServiceIml implements AlbumService {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Album> queryOneAlbum(String id) {
+        Album album = new Album();
+        album.setId(id);
+        Album album1 = mapper.selectByPrimaryKey(album);
+        List<Album> list = new ArrayList<Album>();
+        list.add(album1);
+        return list;
     }
 }

@@ -96,6 +96,12 @@ public class CmfwApplicationTests {
 
     @Test
     public void test9() {
+        String abc = "/myradio/贵族乐团 - 寂静之声.mp3";
+        String[] split = abc.split("/");
+        System.out.println(split.length);
+        for (String s : split) {
+            System.out.println(s);
+        }
 
     }
 }

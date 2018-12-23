@@ -29,7 +29,6 @@
                     password: apassword,
                     code: acode
                 }, function (res) {
-                    console.info("返回")
                     if (res == "") {
                         location.href = "${pageContext.request.contextPath }/main/main.jsp";
                     } else {

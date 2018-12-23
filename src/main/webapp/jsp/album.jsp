@@ -5,7 +5,27 @@
         iconCls: 'icon-help',
         text: "专辑详情",
         handler: function () {
-            alert('编辑按钮')
+            var row = $("#album").treegrid("getSelected");
+            if (row != null) {
+                var bb = $("#album").treegrid("getLevel", row.id);
+                if (bb == 1) {
+                    /*album = row.id;
+                    $("#albumInformationdiv").dialog("open");*/
+                    $.messager.alert(
+                        row.title + "的详细信息",
+                        "章节数量:" + row.count +
+                        '<br><img src="${pageContext.request.contextPath}' + row.coverImg + '" style="height:150px;">' +
+                        "<br>作者:" + row.author +
+                        "<br>播音:" + row.broadcast +
+                        "<br>简介:" + row.brief +
+                        "<br>上架时间:" + row.pubDate
+                    )
+                } else {
+                    alert("只可查看专辑详情哦");
+                }
+            } else {
+                alert("请先选中行");
+            }
         }
     }, '-', {
         iconCls: 'icon-add',
@@ -20,13 +40,14 @@
         handler: function () {
             var row = $("#album").treegrid("getSelected");
             if (row != null) {
-                var aa = $("#album").treegrid("getRoot");
-                console.log(aa);
-                if (aa == null) {
-                    alert("请选择专辑")
+                var bb = $("#album").treegrid("getLevel", row.id);
+                console.log(bb);
+                if (bb == 1) {
+                    album = row.id;
+                    $("#insertchapterdiv").dialog("open");
+                } else {
+                    alert("请选择专辑行");
                 }
-                album = aa.id;
-                $("#insertchapterdiv").dialog("open");
             } else {
                 alert("请先选中行");
             }
@@ -35,7 +56,37 @@
         iconCls: 'icon-undo',
         text: "下载音频",
         handler: function () {
-            alert('帮助按钮')
+            var row = $("#album").treegrid("getSelected");
+            if (row != null) {
+                var bb = $("#album").treegrid("getLevel", row.id);
+                if (bb != 1) {
+                    $.post("${pageContext.request.contextPath}/Chapter/downLoad",
+                        {url: row.url},
+                        function (res) {
+                            if (res = "") {
+                                $.messager.show({
+                                    title: '下载提示',
+                                    msg: '正在下载',
+                                    timeout: 5000,
+                                    showType: 'slide'
+                                });
+                            } else {
+                                $.messager.show({
+                                    title: '下载提示',
+                                    msg: '下载失败，请稍后重试',
+                                    timeout: 5000,
+                                    showType: 'slide'
+                                });
+                            }
+                        })
+                } else {
+                    alert("请选择章节行");
+                }
+            } else {
+                alert("请先选中行"
+                )
+                ;
+            }
         }
     }]
 
@@ -85,8 +136,22 @@
             modal: true,
             cache: false
         });
+
+        $("#albumInformationdiv").dialog({
+            closed: "true",
+            title: "专辑详情",
+            iconCls: "icon-add",
+            width: 400,
+            height: 420,
+            href: "${pageContext.request.contextPath}/jsp/albumInformation.jsp",
+            minimizable: true,
+            maximizable: true,
+            modal: true,
+            cache: false
+        });
     });
 </script>
 <div id="insertalbumdiv"></div>
 <div id="insertchapterdiv"></div>
+<div id="albumInformationdiv"></div>
 <table id="album"></table>

@@ -10,4 +10,6 @@ public interface AlbumService {
     public List<Album> queryAlbum();
 
     public void insertAldum(HttpSession session, MultipartFile file, Album album);
+
+    public List<Album> queryOneAlbum(String id);
 }
