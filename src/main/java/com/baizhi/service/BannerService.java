@@ -11,7 +11,7 @@ public interface BannerService {
 
     public void update(Banner banner);
 
-    public void delete(Integer id);
+    public void delete(Integer id, String img, HttpSession session);
 
     public void insert(String title, String description, HttpSession session, MultipartFile file);
 }

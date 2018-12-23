@@ -42,8 +42,17 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
-    public void delete(Integer id) {
-        mapper.deleteByPrimaryKey(id);
+    public void delete(Integer id, String img, HttpSession session) {
+        try {
+            ServletContext servlet = session.getServletContext();
+            String realPath = servlet.getRealPath("/myimg");
+            String path = realPath + "\\" + img.split("/")[2];
+            File deleteFile = new File(path);
+            mapper.deleteByPrimaryKey(id);
+            deleteFile.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

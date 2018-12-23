@@ -62,7 +62,9 @@ public class ChapterServiceImpl implements ChapterService {
             long s = 0;
             MultimediaInfo m;
             try {
+                //获得文件信息
                 m = encoder.getInfo(files);
+                //获取音频长度
                 s = m.getDuration();
                 istime = s / 60000 + "分" + (s / 1000 - s / 60000 * 60) + "秒";
                 System.out.println("此视频时长为:" + s / 60000 + "分" + (s / 1000 - s / 60000 * 60) + "秒");

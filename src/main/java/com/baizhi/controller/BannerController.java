@@ -29,8 +29,8 @@ public class BannerController {
     }
 
     @RequestMapping("delete")
-    public void delete(Integer id) {
-        service.delete(id);
+    public void delete(Integer id, String imgPath, HttpSession session) {
+        service.delete(id, imgPath, session);
     }
 
     @RequestMapping("insert")

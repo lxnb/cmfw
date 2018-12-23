@@ -60,25 +60,7 @@
             if (row != null) {
                 var bb = $("#album").treegrid("getLevel", row.id);
                 if (bb != 1) {
-                    $.post("${pageContext.request.contextPath}/Chapter/downLoad",
-                        {url: row.url},
-                        function (res) {
-                            if (res == "") {
-                                $.messager.show({
-                                    title: '下载提示',
-                                    msg: '正在下载',
-                                    timeout: 5000,
-                                    showType: 'slide'
-                                });
-                            } else {
-                                $.messager.show({
-                                    title: '下载提示',
-                                    msg: '下载失败，请稍后重试',
-                                    timeout: 5000,
-                                    showType: 'slide'
-                                });
-                            }
-                        })
+                    location.href = "${pageContext.request.contextPath}/Chapter/downLoad?url=" + row.url;
                 } else {
                     alert("请选择章节行");
                 }

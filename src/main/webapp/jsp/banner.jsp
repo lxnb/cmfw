@@ -30,7 +30,10 @@
                 if (row != null) {
                     $.messager.confirm('确认对话框', '您确认删除吗？', function (r) {
                         if (r) {
-                            $.post("${pageContext.request.contextPath}/Banner/delete", {id: row.bId}, function (res) {
+                            $.post("${pageContext.request.contextPath}/Banner/delete", {
+                                id: row.bId,
+                                imgPath: row.imgPath
+                            }, function (res) {
                                 $.messager.show({
                                     title: '提示窗口',
                                     msg: '删除成功。',
