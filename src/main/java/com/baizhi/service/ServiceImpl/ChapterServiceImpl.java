@@ -14,12 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Date;
 
@@ -87,28 +85,49 @@ public class ChapterServiceImpl implements ChapterService {
     }
 
     @Override
-    public void downLoad(HttpSession session, HttpServletResponse response, String url) {
+    public String downLoad(HttpSession session, HttpServletResponse response, String url) {
+        //文件夹所在路径
         String realPath = session.getServletContext().getRealPath("/myradio");
+        //只包含文件名
         String fileName = url.split("/")[2];
         System.out.println(fileName);
+        //文件绝对路径
         String path = realPath + "\\" + url.split("/")[2];
         System.out.println(path);
-        //文件下载时所携带的文件名（设置响应头，以附件形式）
-        response.setHeader("content-disposition", "attachment;filename" + fileName);
-        //文件下载类型-二进制
-        /*response.setContentType("application/octet-stream");*/
+        File file = new File(realPath, fileName);
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
 
         try {
-            FileInputStream fis = new FileInputStream(path);
-            byte[] content = new byte[fis.available()];
-            fis.read(content);
-            ServletOutputStream sos = response.getOutputStream();
-            sos.write(content);
-            sos.flush();
-            sos.close();
+            //文件下载时所携带的文件名（设置响应头，以附件形式）
+            response.setHeader("content-disposition", "attachment;filename" + URLEncoder.encode(fileName, "UTF-8"));
+            byte[] buffer = new byte[1024];
+            fis = new FileInputStream(file);
+            bis = new BufferedInputStream(fis);
+            OutputStream os = response.getOutputStream();
+            int i = bis.read(buffer);
+            while (i != -1) {
+                os.write(buffer, 0, i);
+                i = bis.read(buffer);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-
+        return null;
     }
 }

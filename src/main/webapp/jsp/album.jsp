@@ -63,7 +63,7 @@
                     $.post("${pageContext.request.contextPath}/Chapter/downLoad",
                         {url: row.url},
                         function (res) {
-                            if (res = "") {
+                            if (res == "") {
                                 $.messager.show({
                                     title: '下载提示',
                                     msg: '正在下载',
@@ -90,6 +90,13 @@
         }
     }]
 
+    function opi(value, row, index) {
+        if (row.children == null) {
+            return "<p>" + value + "</p>" +
+                "<audio controls='controls' src='${pageContext.request.contextPath}" + value + "'></audio>";
+        }
+    }
+
     $(function () {
         $('#album').treegrid({
             url: '${pageContext.request.contextPath}/Album/queryAlbum',
@@ -99,7 +106,7 @@
                 {title: '名字', field: 'title', width: 180},
                 {field: 'size', title: '大小', width: 60},
                 {field: 'duration', title: '时长 Date', width: 80},
-                {field: 'url', title: '下载链接', width: 80},
+                {field: 'url', title: '下载链接', width: 80, formatter: opi},
                 {field: 'uploadDate', title: '上传时间', width: 80}
             ]],
             fit: true,
@@ -154,4 +161,9 @@
 <div id="insertalbumdiv"></div>
 <div id="insertchapterdiv"></div>
 <div id="albumInformationdiv"></div>
-<table id="album"></table>
+<table id="album">
+</table>
+<%--<audio controls autoplay>
+    <source src="${pageContext.request.contextPath}/myradio/王上 - 青春大概.mp3" type="audio/ogg" controls />
+</audio>--%>
+
