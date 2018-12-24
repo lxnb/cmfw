@@ -17,7 +17,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Date;
 
@@ -92,17 +91,14 @@ public class ChapterServiceImpl implements ChapterService {
         String realPath = session.getServletContext().getRealPath("/myradio");
         //只包含文件名
         String fileName = url.split("/")[2];
-        System.out.println(fileName);
-        //文件绝对路径
-        String path = realPath + "\\" + url.split("/")[2];
-        System.out.println(path);
         File file = new File(realPath, fileName);
         FileInputStream fis = null;
         BufferedInputStream bis = null;
-
         try {
-            //文件下载时所携带的文件名（设置响应头，以附件形式）
-            response.setHeader("content-disposition", "attachment;filename" + URLEncoder.encode(fileName, "UTF-8"));
+            //文件名带中文下载时所携带的文件名（设置响应头，以附件形式）
+            response.setHeader("Content-Disposition", "attachment;" + "fileName=" + new String(fileName.getBytes("GBK"), "ISO8859-1"));
+            //文件名不带中文
+            /* response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);*/
             byte[] buffer = new byte[1024];
             fis = new FileInputStream(file);
             bis = new BufferedInputStream(fis);
