@@ -1,5 +1,7 @@
 package com.baizhi;
 
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.baizhi.entity.*;
 import com.baizhi.mapper.*;
 import com.github.pagehelper.PageHelper;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -102,6 +105,20 @@ public class CmfwApplicationTests {
         for (String s : split) {
             System.out.println(s);
         }
+    }
+
+    @Test
+    public void test10() {
+        ImportParams params = new ImportParams();
+        params.setTitleRows(1);
+        params.setHeadRows(1);
+        List<Album> list = ExcelImportUtil.importExcel(
+                new File("F:\\专辑详情.xls"),
+                Album.class, params);
+        for (Album album : list) {
+            System.out.println(album);
+        }
+
 
     }
 }
