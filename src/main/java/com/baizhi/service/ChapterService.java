@@ -12,4 +12,5 @@ public interface ChapterService {
 
     //下载
     public void downLoad(HttpSession session, HttpServletResponse response, String url, String title);
+
 }

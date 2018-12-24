@@ -71,6 +71,12 @@
                 ;
             }
         }
+    }, '-', {
+        iconCls: 'icon-undo',
+        text: "导出表格",
+        handler: function () {
+            location.href = "${pageContext.request.contextPath}/Album/outExcel";
+        }
     }]
 
     function opi(value, row, index) {

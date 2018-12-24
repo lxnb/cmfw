@@ -1,13 +1,11 @@
 package com.baizhi.service.ServiceImpl;
 
+import com.baizhi.conf.AudioUtils;
 import com.baizhi.entity.Album;
 import com.baizhi.entity.Chapter;
 import com.baizhi.mapper.AlbumMapper;
 import com.baizhi.mapper.ChapterMapper;
 import com.baizhi.service.ChapterService;
-import it.sauronsoftware.jave.Encoder;
-import it.sauronsoftware.jave.EncoderException;
-import it.sauronsoftware.jave.MultimediaInfo;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,19 +60,7 @@ public class ChapterServiceImpl implements ChapterService {
                 size = df.format((double) filesize / 1073741824) + "GB";
             }
             //计算音频时长
-            Encoder encoder = new Encoder();
-            long s = 0;
-            MultimediaInfo m;
-            try {
-                //获得文件信息
-                m = encoder.getInfo(files);
-                //获取音频长度
-                s = m.getDuration();
-                istime = s / 60000 + "分" + (s / 1000 - s / 60000 * 60) + "秒";
-                System.out.println("此视频时长为:" + s / 60000 + "分" + (s / 1000 - s / 60000 * 60) + "秒");
-            } catch (EncoderException e) {
-                e.printStackTrace();
-            }
+            istime = AudioUtils.getDuration(files);
             chapter.setId(null);
             chapter.setSize(size);
             chapter.setDuration(istime);
@@ -118,4 +104,6 @@ public class ChapterServiceImpl implements ChapterService {
             e.printStackTrace();
         }
     }
+
+
 }

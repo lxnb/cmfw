@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -39,6 +40,11 @@ public class AlbumController<p> {
         List<Album> album = service.queryOneAlbum(id);
         System.out.println(album);
         return album;
+    }
+
+    @RequestMapping("outExcel")
+    public void outExcel(HttpServletResponse response, HttpSession session) {
+        service.outExcel(response, session);
     }
 
 

@@ -34,7 +34,7 @@
                         var bcd = "";
                         $.each(item.menus, function (index1, ii) {
                             var ty = ii.iconcls;
-                            bcd += "<p style='text-align: center'><a id=\"btn\" href=\"#\" class=\"easyui-linkbutton\" onclick=\"addTabs('" + ii.title + "','" + ii.iconcls + "','" + ii.url + "')\" data-options=\"iconCls:'" + ty + "'\">" + ii.title + "</a></p>";
+                            bcd += "<p><a id=\"btn\" href=\"#\" class=\"easyui-linkbutton\" onclick=\"addTabs('" + ii.title + "','" + ii.iconcls + "','" + ii.url + "')\" data-options=\"iconCls:'" + ty + "'\">" + ii.title + "</a></p>";
                         })
                         $("#aa").accordion("add", {
                             title: item.title,
