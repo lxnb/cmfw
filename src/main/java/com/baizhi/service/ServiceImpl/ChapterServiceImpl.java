@@ -8,15 +8,21 @@ import com.baizhi.service.ChapterService;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Date;
 
@@ -39,7 +45,6 @@ public class ChapterServiceImpl implements ChapterService {
             Long time = new Date().getTime();
             File descFile = new File(realPath + "/" + time + "-" + file.getOriginalFilename());
             //上传
-            System.out.println(descFile);
             file.transferTo(descFile);
             //计算文件大小
             files = new File(realPath + "/" + time + "-" + file.getOriginalFilename());
@@ -86,46 +91,31 @@ public class ChapterServiceImpl implements ChapterService {
     }
 
     @Override
-    public String downLoad(HttpSession session, HttpServletResponse response, String url) {
-        //文件夹所在路径
-        String realPath = session.getServletContext().getRealPath("/myradio");
-        //只包含文件名
-        String fileName = url.split("/")[2];
-        File file = new File(realPath, fileName);
-        FileInputStream fis = null;
-        BufferedInputStream bis = null;
+    public void downLoad(HttpSession session, HttpServletResponse response, String url, String title) {
+        //文件夹路径
+        String realPath = session.getServletContext().getRealPath("/");
+        //文件路径
+        System.out.println(realPath);
+        String filePath = realPath + url;
+        System.out.println(filePath);
+        File file = new File(filePath);
+        //获取文件后缀（.mp3）
+        String extension = FilenameUtils.getExtension(url);
+        //为文件拼接类型
+        String oldName = title + "." + extension;
+        String encode = null;
         try {
-            //文件名带中文下载时所携带的文件名（设置响应头，以附件形式）
-            response.setHeader("Content-Disposition", "attachment;" + "fileName=" + new String(fileName.getBytes("GBK"), "ISO8859-1"));
-            //文件名不带中文
-            /* response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);*/
-            byte[] buffer = new byte[1024];
-            fis = new FileInputStream(file);
-            bis = new BufferedInputStream(fis);
-            OutputStream os = response.getOutputStream();
-            int i = bis.read(buffer);
-            while (i != -1) {
-                os.write(buffer, 0, i);
-                i = bis.read(buffer);
-            }
-        } catch (Exception e) {
+            encode = URLEncoder.encode(oldName, "utf-8");
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        } finally {
-            if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        return null;
+        response.setHeader("Content-Disposition", "attachment;fileName=" + encode);
+        response.setContentType("audio/mpeg");
+        try {
+            ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(FileUtils.readFileToByteArray(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

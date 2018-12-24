@@ -60,7 +60,8 @@
             if (row != null) {
                 var bb = $("#album").treegrid("getLevel", row.id);
                 if (bb != 1) {
-                    location.href = "${pageContext.request.contextPath}/Chapter/downLoad?url=" + row.url;
+                    console.log(row.title);
+                    location.href = "${pageContext.request.contextPath}/Chapter/downLoad?url=" + row.url + "&title=" + row.title;
                 } else {
                     alert("请选择章节行");
                 }

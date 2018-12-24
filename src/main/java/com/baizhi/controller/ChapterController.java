@@ -28,10 +28,9 @@ public class ChapterController {
     }
 
     @RequestMapping("downLoad")
-    public String downLoad(HttpSession session, HttpServletResponse response, String url) {
+    public String downLoad(HttpSession session, HttpServletResponse response, String url, String title) {
         try {
-            System.out.println(url);
-            service.downLoad(session, response, url);
+            service.downLoad(session, response, url, title);
             return null;
         } catch (Exception e) {
             e.printStackTrace();

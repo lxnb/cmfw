@@ -11,5 +11,5 @@ public interface ChapterService {
     public void insertChapter(HttpSession session, MultipartFile file, Chapter chapter);
 
     //下载
-    public String downLoad(HttpSession session, HttpServletResponse response, String url);
+    public void downLoad(HttpSession session, HttpServletResponse response, String url, String title);
 }
