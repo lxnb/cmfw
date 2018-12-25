@@ -79,23 +79,23 @@
         }
     }]
 
-    function opi(value, row, index) {
-        if (row.children == null) {
-            return "<p>" + value + "</p>" +
-                "<audio controls='controls' src='${pageContext.request.contextPath}" + value + "'></audio>";
-        }
-    }
+
 
     $(function () {
         $('#album').treegrid({
             url: '${pageContext.request.contextPath}/Album/queryAlbum',
             idField: 'id',
+            onDblClickRow: function (row) {
+                $("#audio_dialog").dialog("open");
+                $("#audio_url").prop("src", "${pageContext.request.contextPath}" + row.url);
+                $("#img_url").prop("src", "${pageContext.request.contextPath}/myimg/9.jpg");
+            },
             treeField: 'title',
             columns: [[
                 {title: '名字', field: 'title', width: 180},
                 {field: 'size', title: '大小', width: 60},
                 {field: 'duration', title: '时长 Date', width: 80},
-                {field: 'url', title: '下载链接', width: 80, formatter: opi},
+                {field: 'url', title: '下载链接', width: 80/*, formatter: opi*/},
                 {field: 'uploadDate', title: '上传时间', width: 80}
             ]],
             fit: true,
@@ -150,9 +150,16 @@
 <div id="insertalbumdiv"></div>
 <div id="insertchapterdiv"></div>
 <div id="albumInformationdiv"></div>
+<div id="audio_dialog" class="easyui-dialog " title="在线播放" style="width:400px;height:400px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true">
+
+    <div class="center-in-center">
+        <img src="" id="img_url" class="logo">
+        <audio id="audio_url" src="" controls="controls" autoplay="autoplay" loop="loop">
+        </audio>
+    </div>
+</div>
 <table id="album">
 </table>
-<%--<audio controls autoplay>
-    <source src="${pageContext.request.contextPath}/myradio/王上 - 青春大概.mp3" type="audio/ogg" controls />
-</audio>--%>
+
 

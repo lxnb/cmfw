@@ -33,6 +33,8 @@ public class CmfwApplicationTests {
     private AlbumMapper mapper5;
     @Autowired
     private ChapterMapper mapper6;
+    @Autowired
+    private UserMapper mapper7;
 
     @Test
     public void contextLoads() {
@@ -118,8 +120,20 @@ public class CmfwApplicationTests {
         for (Album album : list) {
             System.out.println(album);
         }
+    }
 
+    @Test
+    public void test11() {
+        List<Province> provinces = mapper7.queryCity();
+        for (Province province : provinces) {
+            System.out.println(province);
+        }
+    }
 
+    @Test
+    public void test12() {
+        Integer integer = mapper7.queryUserCount(21);
+        System.out.println(integer);
     }
 }
 

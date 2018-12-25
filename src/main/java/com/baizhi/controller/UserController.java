@@ -1,5 +1,6 @@
 package com.baizhi.controller;
 
+import com.baizhi.entity.Province;
 import com.baizhi.entity.User;
 import com.baizhi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,17 @@ public class UserController {
     public List<User> queryAll() {
         List<User> users = service.queryAll();
         return users;
+    }
+
+    @RequestMapping("distribution")
+    public List<Province> distribution() {
+        List<Province> distribution = service.distribution();
+        return distribution;
+    }
+
+    @RequestMapping("queryUserCount")
+    public List<Integer> queryUserCount() {
+        List<Integer> integers = service.queryCount();
+        return integers;
     }
 }

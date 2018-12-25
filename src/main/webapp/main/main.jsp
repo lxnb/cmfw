@@ -2,16 +2,58 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <style type="text/css">
+        .logo {
+            width: 200px;
+            height: 200px;
+            align-content: center;
+            -webkit-animation: haha1 5.4s linear infinite;
+            border-radius: 100%;
+            overflow: hidden;
+        }
+
+        .center-in-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        @-webkit-keyframes haha1 {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            25% {
+                -webkit-transform: rotate(90deg);
+            }
+            50% {
+                -webkit-transform: rotate(180deg);
+            }
+            75% {
+                -webkit-transform: rotate(270deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+    </style>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>持名法州主页</title>
     <link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../themes/IconExtension.css">
     <link rel="stylesheet" type="text/css" href="../themes/icon.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/echarts.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/china.js"></script>
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="../js/datagrid-detailview.js"></script>
     <script type="text/javascript" src="../js/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+
     <script type="text/javascript">
         <!--菜单处理-->
         //Js初始化标签
