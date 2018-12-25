@@ -4,13 +4,13 @@
 
     <resultMap id="d1" type="Album">
         <id column="id" property="id"/>
-        <result column="title" property="title"/>
-        <result column="count" property="count"/>
+        <!--<result column="title" property="title"/>
+         <result column="count" property="count"/>-->
         <result column="cover_img" property="coverImg"/>
-        <result column="score" property="score"/>
+        <!--<result column="score" property="score"/>
         <result column="author" property="author"/>
         <result column="broadcast" property="broadcast"/>
-        <result column="brief" property="brief"/>
+        <result column="brief" property="brief"/>-->
         <result column="pub_date" property="pubDate"/>
         <collection property="children" ofType="Chapter" column="id" select="queryChapter">
 
@@ -18,11 +18,11 @@
     </resultMap>
 
     <resultMap id="d2" type="Chapter">
-        <id column="id" property="id"/>
-        <result column="title" property="title"/>
-        <result column="size" property="size"/>
-        <result column="duration" property="duration"/>
-        <result column="url" property="url"/>
+        <!-- <id column="id" property="id"/>
+         <result column="title" property="title"/>
+         <result column="size" property="size"/>
+         <result column="duration" property="duration"/>
+         <result column="url" property="url"/>-->
         <result column="upload_date" property="uploadDate"/>
         <result column="album_id" property="albumId"/>
     </resultMap>

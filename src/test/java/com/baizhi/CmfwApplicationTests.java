@@ -139,7 +139,7 @@ public class CmfwApplicationTests {
 
     @Test
     public void test13() {
-        List<Album> albums = mapper5.queryAllAlbum();
+        List<Album> albums = mapper5.queryAlbum(1, 2);
         for (Album album : albums) {
             System.out.println(album);
         }
