@@ -61,7 +61,6 @@
         myChart.setOption(option)
 
         $.post("${pageContext.request.contextPath}/User/distribution", function (data) {
-            console.log(data);
             myChart.setOption({
                 series: [{
                     data: data

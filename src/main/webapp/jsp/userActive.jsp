@@ -2,7 +2,7 @@
 <script type="text/javascript">
     $(function () {
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
+        var myChart = echarts.init(document.getElementById('userActive'));
         var option = {
             title: {
                 text: '近三星期用户活跃度',
@@ -22,7 +22,7 @@
         myChart.setOption(option);
         $.ajax({
             type: "post",
-            url: "${pageContext.request.contextPath}/User/queryUserCount.json",
+            url: "${pageContext.request.contextPath}/User/queryUserCount",
             success: function (data) {
                 myChart.setOption({
                     series: [{
@@ -35,4 +35,4 @@
         })
     })
 </script>
-<div id="main" style="width: 600px;height:400px;"></div>
+<div id="userActive" style="width: 600px;height:400px;"></div>

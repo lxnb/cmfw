@@ -113,7 +113,7 @@ public class CmfwApplicationTests {
     public void test10() {
         ImportParams params = new ImportParams();
         params.setTitleRows(1);
-        params.setHeadRows(1);
+        params.setHeadRows(2);
         List<Album> list = ExcelImportUtil.importExcel(
                 new File("F:\\专辑详情.xls"),
                 Album.class, params);
@@ -134,6 +134,15 @@ public class CmfwApplicationTests {
     public void test12() {
         Integer integer = mapper7.queryUserCount(21);
         System.out.println(integer);
+    }
+
+
+    @Test
+    public void test13() {
+        List<Album> albums = mapper5.queryAlbum();
+        for (Album album : albums) {
+            System.out.println(album);
+        }
     }
 }
 

@@ -41,5 +41,6 @@
         from album a
                  left join chapter b
                            on a.id = b.album_id
+
     </select>
 </mapper>
