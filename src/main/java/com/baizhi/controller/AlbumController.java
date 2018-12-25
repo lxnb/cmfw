@@ -1,6 +1,7 @@
 package com.baizhi.controller;
 
 import com.baizhi.entity.Album;
+import com.baizhi.entity.AlbumDTO;
 import com.baizhi.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +19,8 @@ public class AlbumController<p> {
     private AlbumService service;
 
     @RequestMapping("queryAlbum")
-    public List<Album> queryAlbum() {
-        List<Album> albums = service.queryAlbum();
+    public AlbumDTO queryAlbum(Integer page, Integer rows) {
+        AlbumDTO albums = service.queryAlbum(page, rows);
         return albums;
     }
 

@@ -3,6 +3,7 @@ package com.baizhi.service.ServiceImpl;
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.baizhi.entity.Album;
+import com.baizhi.entity.AlbumDTO;
 import com.baizhi.mapper.AlbumMapper;
 import com.baizhi.service.AlbumService;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -32,9 +33,12 @@ public class AlbumServiceIml implements AlbumService {
 
 
     @Override
-    public List<Album> queryAlbum() {
-        List<Album> albums = mapper.queryAlbum();
-        return albums;
+    public AlbumDTO queryAlbum(Integer page, Integer rows) {
+        List<Album> albums = mapper.queryAlbum(page, rows);
+        Album a = new Album();
+        int i = mapper.selectCount(a);
+        AlbumDTO dto = new AlbumDTO(albums, i);
+        return dto;
     }
 
     @Override
@@ -72,7 +76,7 @@ public class AlbumServiceIml implements AlbumService {
 
     @Override
     public void outExcel(HttpServletResponse response, HttpSession session) {
-        List<Album> list = mapper.queryAlbum();
+        List<Album> list = mapper.queryAllAlbum();
         for (Album album : list) {
             album.setCoverImg(session.getServletContext().getRealPath(album.getCoverImg()));
         }

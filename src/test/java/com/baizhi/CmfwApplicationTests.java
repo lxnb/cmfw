@@ -95,7 +95,7 @@ public class CmfwApplicationTests {
     @Test
     public void test8() {
         PageHelper.startPage(1, 2);
-        List<Album> albums = mapper5.queryAlbum();
+        List<Album> albums = mapper5.queryAlbum(1, 2);
         System.out.println(albums);
     }
 
@@ -139,7 +139,7 @@ public class CmfwApplicationTests {
 
     @Test
     public void test13() {
-        List<Album> albums = mapper5.queryAlbum();
+        List<Album> albums = mapper5.queryAllAlbum();
         for (Album album : albums) {
             System.out.println(album);
         }

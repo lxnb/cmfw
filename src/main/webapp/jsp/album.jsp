@@ -101,7 +101,9 @@
             fit: true,
             fitColumns: true,
             toolbar: toolbar,
-
+            pagination: true,
+            pageSize: 2,
+            pageList: [2, 4, 6, 8],
             checkbox: true
         });
 
