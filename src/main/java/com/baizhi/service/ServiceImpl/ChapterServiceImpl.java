@@ -81,11 +81,9 @@ public class ChapterServiceImpl implements ChapterService {
         //文件夹路径
         String realPath = session.getServletContext().getRealPath("/");
         //文件路径
-        System.out.println(realPath);
         String filePath = realPath + url;
-        System.out.println(filePath);
         File file = new File(filePath);
-        //获取文件后缀（.mp3）
+        //获取文件后缀（mp3）
         String extension = FilenameUtils.getExtension(url);
         //为文件拼接类型
         String oldName = title + "." + extension;

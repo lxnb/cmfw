@@ -22,3 +22,12 @@ spring:
 mybatis:
   type-aliases-package: com.baizhi.entity
   mapper-locations: classpath:/mapper/*Mapper.xml
+
+fdfs:
+  so-timeout: 1501
+  connect-timeout: 601
+  thumb-image:
+    width: 150
+    height: 150
+  tracker-list:
+    - 192.168.243.135:22122
