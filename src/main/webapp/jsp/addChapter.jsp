@@ -31,7 +31,7 @@
                                     msg: "添加失败,请稍后再试"
                                 });
                         }
-                        $("#album").treegrid("load");
+                        $("#album").treegrid("reload");
                     }
                 });
             }

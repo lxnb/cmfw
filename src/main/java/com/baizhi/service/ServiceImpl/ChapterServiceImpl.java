@@ -6,18 +6,20 @@ import com.baizhi.entity.Chapter;
 import com.baizhi.mapper.AlbumMapper;
 import com.baizhi.mapper.ChapterMapper;
 import com.baizhi.service.ChapterService;
-import org.apache.commons.io.FileUtils;
+import com.github.tobato.fastdfs.domain.fdfs.StorePath;
+import com.github.tobato.fastdfs.domain.proto.storage.DownloadByteArray;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -31,22 +33,23 @@ public class ChapterServiceImpl implements ChapterService {
     private ChapterMapper mapper;
     @Autowired
     private AlbumMapper mapper2;
+    @Autowired
+    FastFileStorageClient fastFileStorageClient;
 
     @Override
     public void insertChapter(HttpSession session, MultipartFile file, Chapter chapter) {
-        File files;
+        File files = null;
         String istime = null;
         try {
-            ServletContext servlet = session.getServletContext();
-            String realPath = servlet.getRealPath("/myradio");
-            //目标文件
-            Long time = new Date().getTime();
-            File descFile = new File(realPath + "/" + time + "-" + file.getOriginalFilename());
-            //上传
-            file.transferTo(descFile);
-            //计算文件大小
-            files = new File(realPath + "/" + time + "-" + file.getOriginalFilename());
+            //创建File类型空文件接收MultpartFile类型下file的内容
+            files = File.createTempFile("tmp", null);
+            //类型转换
+            file.transferTo(files);
+            FileInputStream stream = new FileInputStream(files);
+            //计算时长
             long filesize = files.length();
+            //提交至fastdfs
+            StorePath storePath = fastFileStorageClient.uploadFile(stream, filesize, FilenameUtils.getExtension(file.getOriginalFilename()), null);
             //文件大小变量
             String size = "";
             DecimalFormat df = new DecimalFormat("#.00");
@@ -64,12 +67,14 @@ public class ChapterServiceImpl implements ChapterService {
             chapter.setId(null);
             chapter.setSize(size);
             chapter.setDuration(istime);
-            chapter.setUrl("/myradio/" + time + "-" + file.getOriginalFilename());
+            chapter.setUrl(storePath.getGroup() + "/" + storePath.getPath());
             chapter.setUploadDate(new Date());
             mapper.insert(chapter);
             Album album = mapper2.selectByPrimaryKey(chapter.getAlbumId());
             album.setCount(album.getCount() + 1);
             mapper2.updateByPrimaryKey(album);
+            stream.close();
+            files.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
@@ -78,11 +83,6 @@ public class ChapterServiceImpl implements ChapterService {
 
     @Override
     public void downLoad(HttpSession session, HttpServletResponse response, String url, String title) {
-        //文件夹路径
-        String realPath = session.getServletContext().getRealPath("/");
-        //文件路径
-        String filePath = realPath + url;
-        File file = new File(filePath);
         //获取文件后缀（mp3）
         String extension = FilenameUtils.getExtension(url);
         //为文件拼接类型
@@ -96,8 +96,10 @@ public class ChapterServiceImpl implements ChapterService {
         response.setHeader("Content-Disposition", "attachment;fileName=" + encode);
         response.setContentType("audio/mpeg");
         try {
+            String[] split = url.split("/", 2);
+            byte[] bytes = fastFileStorageClient.downloadFile(split[0], split[1], new DownloadByteArray());
             ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(FileUtils.readFileToByteArray(file));
+            outputStream.write(bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }

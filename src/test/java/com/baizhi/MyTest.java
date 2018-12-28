@@ -32,4 +32,12 @@ public class MyTest {
         fileOutputStream.write(bytes);
         fileOutputStream.close();
     }
+
+    @Test
+    public void testDownLoad() {
+        String url = "group1/M00/00/00/wKjziFwmOUKAHlXrAIgmSXiBLIY303.mp3";
+        String[] split = url.split("/", 2);
+        System.out.println(split[0]);
+        System.out.println(split[1]);
+    }
 }
