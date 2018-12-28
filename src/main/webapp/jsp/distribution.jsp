@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
-
-
 <script type="text/javascript">
     $(function () {
         var myChart = echarts.init(document.getElementById('distribution'));
@@ -59,7 +57,6 @@
             ]
         };
         myChart.setOption(option)
-
         $.post("${pageContext.request.contextPath}/User/distribution", function (data) {
             myChart.setOption({
                 series: [{
@@ -67,6 +64,20 @@
                 }]
             });
         }, "json");
+        var goEasy = new GoEasy({
+            appkey: "BC-f85983491bd943b0b09ca386f90fd862"
+        });
+        goEasy.subscribe({
+            channel: "140",
+            onMessage: function (message) {
+                var jsonpro = eval('(' + message.content + ')');
+                myChart.setOption({
+                    series: [{
+                        data: jsonpro
+                    }]
+                });
+            }
+        });
     })
 </script>
 <div id="distribution" style="width: 600px;height:400px;"></div>

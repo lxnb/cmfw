@@ -1,6 +1,7 @@
 package com.baizhi.service;
 
 import com.baizhi.entity.Province;
+import com.baizhi.entity.User;
 import com.baizhi.entity.UserDTO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,10 @@ public interface UserService {
 
     //导入
     public void inserExcel(MultipartFile file);
+
+    //注册
+    public void registUser(User user, MultipartFile file);
+
 
 
 }

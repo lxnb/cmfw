@@ -13,6 +13,18 @@
             handler: function () {
                 location.href = "${pageContext.request.contextPath}/User/outExcel"
             }
+        }, '-', {
+            text: "用户分布图",
+            iconCls: 'icon-help',
+            handler: function () {
+                $("#userlocal").dialog("open");
+            }
+        }, '-', {
+            text: "用户注册",
+            iconCls: 'icon-help',
+            handler: function () {
+                $("#registDialog").dialog("open");
+            }
         }]
 
         $('#usersTable').datagrid({
@@ -53,6 +65,34 @@
             modal: true,
             cache: false
         });
+
+
+        $("#registDialog").dialog({
+            closed: "true",
+            title: "用户注册",
+            iconCls: "icon-add",
+            width: 400,
+            height: 500,
+            href: "${pageContext.request.contextPath}/jsp/addUser.jsp",
+            minimizable: true,
+            maximizable: true,
+            modal: true,
+            cache: false
+        });
+
+
+        $("#userlocal").dialog({
+            closed: "true",
+            title: "用户分布图",
+            iconCls: "icon-add",
+            width: 650,
+            height: 500,
+            href: "${pageContext.request.contextPath}/jsp/distribution.jsp",
+            minimizable: true,
+            maximizable: true,
+            modal: true,
+            cache: false
+        });
     })
 
     function pic(value, row, index) {
@@ -76,4 +116,6 @@
     }
 </script>
 <div id="inseruserExcel"></div>
+<div id="userlocal"></div>
+<div id="registDialog"></div>
 <table id="usersTable"></table>

@@ -7,7 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import tk.mybatis.mapper.annotation.KeySql;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +19,8 @@ import java.util.Date;
 public class User implements Serializable {
 
     @ExcelIgnore
+    @Id
+    @KeySql(useGeneratedKeys = true)
     private Integer uId;
     @Excel(name = "手机号")
     private String phone;

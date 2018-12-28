@@ -98,4 +98,10 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void registUser(User user, MultipartFile file) {
+        System.out.println(user);
+        System.out.println(file.getOriginalFilename());
+    }
 }

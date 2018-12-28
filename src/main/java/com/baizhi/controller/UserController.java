@@ -1,6 +1,7 @@
 package com.baizhi.controller;
 
 import com.baizhi.entity.Province;
+import com.baizhi.entity.User;
 import com.baizhi.entity.UserDTO;
 import com.baizhi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class UserController {
         }
     }
 
+    @RequestMapping("inserExcel")
     public String inserExcel(MultipartFile file) {
         try {
             service.inserExcel(file);
@@ -56,4 +58,10 @@ public class UserController {
             return e.getMessage();
         }
     }
+
+    @RequestMapping("registUser")
+    public void registUser(User user, MultipartFile file) {
+        service.registUser(user, file);
+    }
+
 }
