@@ -16,4 +16,10 @@ public interface AlbumService {
     public List<Album> queryOneAlbum(String id);
 
     public void outExcel(HttpServletResponse response, HttpSession session);
+
+    //首页业务相关
+    public Object queryHomePage(Integer uid, String type, String sub_type);
+
+    //闻详细信息
+    public Object queryWenMess(Integer uid, String albumId);
 }

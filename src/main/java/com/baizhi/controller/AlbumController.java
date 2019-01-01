@@ -49,4 +49,17 @@ public class AlbumController<p> {
     }
 
 
+    //首页
+    @RequestMapping(value = "queryHomePage", produces = "text/plain;charset=utf-8")
+    public Object queryHomePage(Integer uid, String type, String sub_type) {
+        Object o = service.queryHomePage(uid, type, sub_type);
+        return o;
+    }
+
+    //闻详情
+    @RequestMapping(value = "queryWenMess", produces = "text/plain;charset=utf-8")
+    public Object queryWenMess(Integer uid, String albumId) {
+        Object o = service.queryWenMess(uid, albumId);
+        return o;
+    }
 }

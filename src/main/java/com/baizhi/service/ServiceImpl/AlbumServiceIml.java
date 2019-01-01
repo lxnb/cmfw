@@ -2,9 +2,11 @@ package com.baizhi.service.ServiceImpl;
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
-import com.baizhi.entity.Album;
-import com.baizhi.entity.AlbumDTO;
+import com.baizhi.entity.*;
 import com.baizhi.mapper.AlbumMapper;
+import com.baizhi.mapper.ArticleMapper;
+import com.baizhi.mapper.BannerMapper;
+import com.baizhi.mapper.UserMapper;
 import com.baizhi.service.AlbumService;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -30,6 +29,12 @@ public class AlbumServiceIml implements AlbumService {
 
     @Autowired
     private AlbumMapper mapper;
+    @Autowired
+    private BannerMapper mapper1;
+    @Autowired
+    private ArticleMapper mapper2;
+    @Autowired
+    private UserMapper mapper3;
 
 
     @Override
@@ -89,6 +94,55 @@ public class AlbumServiceIml implements AlbumService {
             workbook.write(response.getOutputStream());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Object queryHomePage(Integer uid, String type, String sub_type) {
+        if (uid != null || type != null) {
+            if (type.equals("all")) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                List<Album> albums = mapper.queryNewSixAlbum();
+                List<Banner> banners = mapper1.queryFiveBanner();
+                List<Article> articles = mapper2.queryNewText();
+                map.put("albums", albums);
+                map.put("banner", banners);
+                map.put("articles", articles);
+                return map;
+            } else if (type.equals("wen")) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                List<Album> albums = mapper.queryAllAlbum();
+                map.put("album", albums);
+                return map;
+            } else {
+                if (sub_type != null) {
+                    User user = mapper3.selectByPrimaryKey(uid);
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    if (sub_type.equals("ssyj")) {
+                        List<Article> articles = mapper2.queryMyGuruText(user.getGuruId());
+                        map.put("articles", articles);
+                        return map;
+                    } else {
+                        List<Article> articles = mapper2.queryOtherGuruText(user.getGuruId());
+                        map.put("articles", articles);
+                        return map;
+                    }
+                } else {
+                    return "参数不能为空";
+                }
+            }
+        } else {
+            return "参数不能为空";
+        }
+    }
+
+    @Override
+    public Object queryWenMess(Integer uid, String albumId) {
+        if (uid != null || albumId != null) {
+            Album album = mapper.queryOneAlbum(albumId);
+            return album;
+        } else {
+            return "参数不能为空";
         }
     }
 }

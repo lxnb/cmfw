@@ -24,7 +24,7 @@ public class TestGoEasy {
 
     @Test
     public void GoEasy() {
-        User user = new User(null, "15465214789", "123456", "adwd", "啦啦啦", "4.jpg", "用户11号", "喇嘛喇嘛", 1, "宁夏", "银川", 1, new Date());
+        User user = new User(null, "15465214789", "123456", "adwd", "啦啦啦", "4.jpg", "用户11号", "喇嘛喇嘛", 1, "宁夏", "银川", 1, new Date(), 1);
         mapper.insert(user);
         List<Province> provinces = mapper.queryCity();
         String s = JSON.toJSONString(provinces);

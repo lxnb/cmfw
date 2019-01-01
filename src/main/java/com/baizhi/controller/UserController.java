@@ -64,4 +64,28 @@ public class UserController {
         service.registUser(user, file);
     }
 
+    @RequestMapping(value = "userLogin", produces = "text/plain;charset=utf-8")
+    public Object userLogin(String phone, String pass) {
+        Object o = service.userLogin(phone, pass);
+        return o;
+    }
+
+    @RequestMapping(value = "queryOtherUser", produces = "text/plain;charset=utf-8")
+    public Object queryOtherUser(Integer uid) {
+        Object o = service.queryOtherUser(uid);
+        return o;
+    }
+
+    @RequestMapping(value = "registerOne", produces = "text/plain;charset=utf-8")
+    public Object registerOne(String phone, String password) {
+        Object o = service.registerOne(phone, password);
+        return o;
+    }
+
+    @RequestMapping(value = "changeMess", produces = "text/plain;charset=utf-8")
+    public Object changeMess(User user) {
+        Object o = service.changeMess(user);
+        return o;
+    }
+
 }

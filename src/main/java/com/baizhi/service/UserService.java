@@ -26,6 +26,17 @@ public interface UserService {
     //注册
     public void registUser(User user, MultipartFile file);
 
+    //登录
+    public Object userLogin(String phone, String pass);
+
+    //查询其他用户
+    public Object queryOtherUser(Integer uid);
+
+    //注册第一步
+    public Object registerOne(String phone, String password);
+
+    //修改个人信息
+    public Object changeMess(User user);
 
 
 }

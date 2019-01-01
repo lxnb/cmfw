@@ -4,12 +4,14 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.baizhi.conf.RandomSaltUtil;
 import com.baizhi.entity.Province;
 import com.baizhi.entity.User;
 import com.baizhi.entity.UserDTO;
 import com.baizhi.mapper.UserMapper;
 import com.baizhi.service.UserService;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +103,63 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registUser(User user, MultipartFile file) {
-        System.out.println(user);
-        System.out.println(file.getOriginalFilename());
+
+    }
+
+    @Override
+    public Object userLogin(String phone, String pass) {
+        if (phone != null && pass != null) {
+            User user = mapper.selectOne(new User(phone));
+            if (user != null) {
+                String salt = user.getSalt();
+                String md5 = DigestUtils.md5Hex(pass + salt);
+                if (user.getPassword().equals(md5)) {
+                    return user;
+                } else {
+                    return "密码错误";
+                }
+            } else {
+                return "电话号码不存在";
+            }
+        } else {
+            return "参数不能为空";
+        }
+
+    }
+
+    @Override
+    public Object queryOtherUser(Integer uid) {
+        if (uid != null) {
+            Example example = new Example(User.class);
+            example.createCriteria().andNotEqualTo("uId", 1);
+            List<User> users = mapper.selectByExample(example);
+            return users;
+        } else {
+            return "参数不可为空";
+        }
+
+    }
+
+    @Override
+    public Object registerOne(String phone, String password) {
+        if (phone != null && password != null) {
+            String salt = RandomSaltUtil.generetRandomSaltCode();
+            String md5pass = DigestUtils.md5Hex(password + salt);
+            mapper.insert(new User(null, phone, md5pass, salt, 3));
+            User user = new User(phone);
+            User user1 = mapper.selectOne(user);
+            return user1;
+        } else {
+            return "参数不可为空";
+        }
+
+    }
+
+    @Override
+    public Object changeMess(User user) {
+        mapper.updateByPrimaryKey(user);
+        User u = new User(user.getUId());
+        User user1 = mapper.selectOne(user);
+        return user1;
     }
 }

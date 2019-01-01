@@ -3,9 +3,7 @@ package com.baizhi.entity;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelIgnore;
 import com.alibaba.fastjson.annotation.JSONField;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import tk.mybatis.mapper.annotation.KeySql;
 
@@ -16,13 +14,27 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class User implements Serializable {
+
+    public User(Integer uId, String phone, String password, String salt, Integer status) {
+        this.uId = uId;
+        this.phone = phone;
+        this.password = password;
+        this.salt = salt;
+        this.status = status;
+    }
+
+    public User(Integer uId) {
+        this.uId = uId;
+    }
 
     @ExcelIgnore
     @Id
     @KeySql(useGeneratedKeys = true)
     private Integer uId;
     @Excel(name = "手机号")
+    @NonNull
     private String phone;
     @Excel(name = "密码")
     private String password;
@@ -48,4 +60,5 @@ public class User implements Serializable {
     @JSONField(format = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date regDate;
+    private Integer guruId;
 }

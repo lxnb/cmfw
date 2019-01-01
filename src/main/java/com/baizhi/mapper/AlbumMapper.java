@@ -11,4 +11,10 @@ public interface AlbumMapper extends Mapper<Album> {
     public List<Album> queryAlbum(@Param("page") Integer page, @Param("rows") Integer rows);
 
     public List<Album> queryAllAlbum();
+
+    //查首页推荐专辑
+    public List<Album> queryNewSixAlbum();
+
+    //查一种专辑所有内容
+    public Album queryOneAlbum(String id);
 }

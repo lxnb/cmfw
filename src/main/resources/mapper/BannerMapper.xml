@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.mapper.BannerMapper">
+
+    <select id="queryFiveBanner" resultType="Banner">
+        select b_id bId,title title,img_path imgPath,status status,pub_date pubDate,description description
+        from banner
+        where status = 'Y'
+        order by pub_date limit 0,5
+    </select>
+
+
+</mapper>
