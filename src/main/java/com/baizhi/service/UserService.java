@@ -38,5 +38,11 @@ public interface UserService {
     //修改个人信息
     public Object changeMess(User user);
 
+    //发送验证码
+    public String sendCode(String phone, HttpSession session);
+
+    //比对验证码
+    public String compareCode(String phone, String code, HttpSession session);
+
 
 }

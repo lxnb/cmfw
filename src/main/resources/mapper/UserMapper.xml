@@ -14,4 +14,24 @@
         where datediff(now(), reg_date) < #{day}
         ]]>
     </select>
+
+    <!--  <update id="updateUser" >
+          update user
+          <set>
+              <if test="phone!=null">phone=#{phone},</if>
+              <if test="password!=null">password=#{password},</if>
+              <if test="salt!=null">salt=#{salt},</if>
+              <if test="sign!=null">sign=#{sign},</if>
+              <if test="headPic!=null">head_pic=#{headPic},</if>
+              <if test="name!=null">name=#{name},</if>
+              <if test="dharma!=null">dharma=#{dharma},</if>
+              <if test="sex!=null">sex=#{sex},</if>
+              <if test="province!=null">province=#{province},</if>
+              <if test="city!=null">city=#{city},</if>
+              <if test="status!=null">status=#{status},</if>
+              <if test="regDate!=null">reg_date=#{regDate},</if>
+              <if test="guruId!=null">guru_id=#{guruId},</if>
+          </set>
+            where u_id=#{uId}
+      </update>-->
 </mapper>

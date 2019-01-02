@@ -88,4 +88,16 @@ public class UserController {
         return o;
     }
 
+    @RequestMapping(value = "sendCode", produces = "text/plain;charset=utf-8")
+    public String sendCode(String phone, HttpSession session) {
+        String s = service.sendCode(phone, session);
+        return s;
+    }
+
+    @RequestMapping(value = "compareCode", produces = "text/plain;charset=utf-8")
+    public String compareCode(String phone, String code, HttpSession session) {
+        String s = service.compareCode(phone, code, session);
+        return s;
+    }
+
 }

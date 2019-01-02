@@ -4,6 +4,7 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.baizhi.conf.MSGUtils;
 import com.baizhi.conf.RandomSaltUtil;
 import com.baizhi.entity.Province;
 import com.baizhi.entity.User;
@@ -157,9 +158,45 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object changeMess(User user) {
-        mapper.updateByPrimaryKey(user);
-        User u = new User(user.getUId());
-        User user1 = mapper.selectOne(user);
-        return user1;
+        if (user.getUId() != null) {
+            mapper.updateByPrimaryKeySelective(user);
+            User user1 = mapper.selectOne(user);
+            return user1;
+        } else {
+            return "用户id不可为空";
+        }
+    }
+
+
+    @Override
+    public String sendCode(String phone, HttpSession session) {
+        if (phone != null) {
+            String s = RandomSaltUtil.generetRandomSaltCode();
+            try {
+                MSGUtils.AliMSG(phone, s);
+                session.setAttribute(phone, s);
+                return "success";
+            } catch (Exception e) {
+                e.printStackTrace();
+                return e.getMessage();
+            }
+        } else {
+            return "参数不可为空";
+        }
+    }
+
+    @Override
+    public String compareCode(String phone, String code, HttpSession session) {
+        if (phone != null && code != null) {
+            String mycode = (String) session.getAttribute(phone);
+            if (mycode.equals(code)) {
+                return "success";
+            } else {
+                return "error";
+            }
+        } else {
+            return "error";
+        }
+
     }
 }

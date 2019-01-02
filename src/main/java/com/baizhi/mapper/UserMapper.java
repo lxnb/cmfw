@@ -11,4 +11,5 @@ public interface UserMapper extends Mapper<User> {
 
     public Integer queryUserCount(Integer day);
 
+    /*public void updateUser(User user);*/
 }

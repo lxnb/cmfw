@@ -5,11 +5,6 @@ package com.baizhi.conf;
 
 import java.util.Random;
 
-/**
- * 类的作用：随机生成时间戳
- * 作者：gzy
- * 创建时间：2015年8月3日下午4:14:27
- */
 public class RandomSaltUtil {
     /**
      *
@@ -18,7 +13,6 @@ public class RandomSaltUtil {
     public static String generetRandomSaltCode() {
         //字符串转char数组
         char[] str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456".toCharArray();
-
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < 4; i++) {
