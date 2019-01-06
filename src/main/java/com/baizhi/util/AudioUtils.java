@@ -1,4 +1,4 @@
-package com.baizhi.conf;
+package com.baizhi.util;
 
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.MultimediaInfo;

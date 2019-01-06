@@ -4,13 +4,13 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
-import com.baizhi.conf.MSGUtils;
-import com.baizhi.conf.RandomSaltUtil;
 import com.baizhi.entity.Province;
 import com.baizhi.entity.User;
 import com.baizhi.entity.UserDTO;
 import com.baizhi.mapper.UserMapper;
 import com.baizhi.service.UserService;
+import com.baizhi.util.MSGUtils;
+import com.baizhi.util.RandomSaltUtil;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Service
 @Transactional
@@ -175,6 +177,25 @@ public class UserServiceImpl implements UserService {
             try {
                 MSGUtils.AliMSG(phone, s);
                 session.setAttribute(phone, s);
+                Timer timer = new Timer();
+                //设置一个线程去管理手机验证码生命周期1分钟
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        session.removeAttribute(phone);
+                        timer.cancel();
+                    }
+                }, 60 * 1000);
+                //设置一个线程去管理用户注册手机号，一小时未填写验证码
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        User user = mapper.selectOne(new User(phone));
+                        if (user.getStatus() == 3) {
+                            mapper.delete(new User(user.getUId()));
+                        }
+                    }
+                }, 60 * 60 * 1000);
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -188,11 +209,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public String compareCode(String phone, String code, HttpSession session) {
         if (phone != null && code != null) {
-            String mycode = (String) session.getAttribute(phone);
-            if (mycode.equals(code)) {
-                return "success";
+            User user = mapper.selectOne(new User(phone));
+            if (user != null) {
+                String mycode = (String) session.getAttribute(phone);
+                if (code.equals(mycode)) {
+                    user.setStatus(1);
+                    mapper.updateByPrimaryKeySelective(user);
+                    session.removeAttribute(phone);
+                    return "success";
+                } else {
+                    return "error";
+                }
             } else {
-                return "error";
+                return "手机号码不正确";
             }
         } else {
             return "error";

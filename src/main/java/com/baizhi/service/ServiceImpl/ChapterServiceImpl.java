@@ -1,11 +1,11 @@
 package com.baizhi.service.ServiceImpl;
 
-import com.baizhi.conf.AudioUtils;
 import com.baizhi.entity.Album;
 import com.baizhi.entity.Chapter;
 import com.baizhi.mapper.AlbumMapper;
 import com.baizhi.mapper.ChapterMapper;
 import com.baizhi.service.ChapterService;
+import com.baizhi.util.AudioUtils;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;

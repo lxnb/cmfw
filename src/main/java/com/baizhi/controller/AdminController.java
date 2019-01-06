@@ -1,7 +1,7 @@
 package com.baizhi.controller;
 
-import com.baizhi.conf.CreateValidateCode;
 import com.baizhi.service.AdminService;
+import com.baizhi.util.CreateValidateCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
