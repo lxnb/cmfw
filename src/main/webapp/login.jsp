@@ -3,47 +3,56 @@
 <head>
     <title>持名法州后台管理中心</title>
 
-    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-    <meta http-equiv="description" content="this is my page">
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="css/common.css" type="text/css"></link>
-    <link rel="stylesheet" href="css/login.css" type="text/css"></link>
+    <link rel="stylesheet" href="css/common.css" type="text/css">
+    <link rel="stylesheet" href="css/login.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/themes/default/easyui.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/themes/icon.css">
     <script type="text/javascript" src="script/jquery.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="script/common.js"></script>
     <script type="text/javascript">
 
         $(function () {
             //点击更换验证码：
             $("#captchaImage").click(function () {//点击更换验证码
-                $("#captchaImage").prop("src", "${pageContext.request.contextPath }/Admin/code?time+" + new Date());
+                $(this).prop("src", "${pageContext.request.contextPath}/Admin/code?time=" + new Date());
             });
 
-            //  form 表单提交
-            $("#loginForm").bind("submit", function () {
-                var aname = $("#adminname").val();
-                var apassword = $("#adminpass").val();
-                var acode = $("#enCode").val();
-                $.post("${pageContext.request.contextPath }/Admin/login", {
-                    name: aname,
-                    password: apassword,
-                    code: acode
-                }, function (res) {
-                    if (res == "") {
-                        location.href = "${pageContext.request.contextPath }/main/main.jsp";
-                    } else {
-                        $("#loginspan").text(res);
-                    }
-                });
-                return false;
+
+            //初始化按钮
+            $("#adminLogin").linkbutton({
+                onClick: function () {
+
+                    $("#loginForm").form("submit", {
+                        //地址
+                        url: "${pageContext.request.contextPath}/Admin/login",
+                        //提交前表单验证
+                        onSubmit: function () {
+                            return $("#loginForm").form("validate");
+                        },
+                        //成功响应后函数
+                        success: function (result) {
+                            if (result == "") {
+                                location.href = "${pageContext.request.contextPath}/main/main.jsp";
+                            } else {
+                                $("#loginspan").text(result);
+
+                            }
+                        }
+                    });
+                }
             });
+
+
         });
     </script>
 </head>
 <body>
 
 <div class="login">
-    <form id="loginForm" action="${pageContext.request.contextPath }/Admin/login" method="post">
+    <form id="loginForm" method="post">
 
         <table>
             <tbody>
@@ -55,7 +64,7 @@
                     用户名:
                 </th>
                 <td>
-                    <input id="adminname" type="text" name="name" class="text" maxlength="20"/>
+                    <input type="text" name="name" class="text" value="" maxlength="20"/>
                 </td>
             </tr>
             <tr>
@@ -63,8 +72,7 @@
                     密&nbsp;&nbsp;&nbsp;码:
                 </th>
                 <td>
-                    <input id="adminpass" type="password" name="password" class="text" maxlength="20"
-                           autocomplete="off"/>
+                    <input type="password" name="password" class="text" value="" maxlength="20" autocomplete="off"/>
                 </td>
             </tr>
 
@@ -72,14 +80,14 @@
                 <td>&nbsp;</td>
                 <th>验证码:</th>
                 <td>
-                    <input type="text" id="enCode" name="code" class="text captcha" maxlength="4" autocomplete="off"/>
-                    <img id="captchaImage" class="captchaImage" src="${pageContext.request.contextPath }/Admin/code"
+                    <input type="text" id="enCode" name="enCode" class="text captcha" maxlength="6"/>
+                    <img id="captchaImage" class="captchaImage" src="${pageContext.request.contextPath}/Admin/code"
                          title="点击更换验证码"/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    &nbsp;<span id="loginspan"></span>
+                    <span id="loginspan"></span>
                 </td>
                 <th>
                     &nbsp;
@@ -89,14 +97,13 @@
                 <td>&nbsp;</td>
                 <th>&nbsp;</th>
                 <td>
-                    <input type="button" class="homeButton" value="" onclick="location.href='/'"><input type="submit"
-                                                                                                        class="loginButton"
-                                                                                                        value="登录">
+                    <input type="button" class="homeButton" value="" onclick="location.href='/'"><a
+                        id="adminLogin">提交</a>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="powered">COPYRIGHT © 2008-2017.</div>
+        <div class="powered">COPYRIGHT ? 2008-2017.</div>
         <div class="link">
             <a href="http://www.chimingfowang.com/">持名佛网首页</a> |
             <a href="http://www.chimingbbs.com/">交流论坛</a> |

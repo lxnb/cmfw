@@ -5,10 +5,10 @@ import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
-import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,7 +25,8 @@ public class ShiroConf {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //多个过滤器  AnonymousFilter  匿名过滤器   anon  //     FormAuthenticationFilter 认证过滤器 authc
         Map<String, String> map = new HashMap<>();
-        // map.put("/Admin/login","anon");
+        map.put("/Admin/login", "anon");
+        map.put("/Admin/code", "anon");
         map.put("/**", "authc");
         shiroFilterFactoryBean.setLoginUrl("/login.jsp");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
@@ -35,7 +36,7 @@ public class ShiroConf {
     //安全管理器
     @Bean
     public SecurityManager getSecurityManager(Realm realm, CacheManager cacheManager) {
-        DefaultSecurityManager securityManager = new DefaultSecurityManager();
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
         securityManager.setCacheManager(cacheManager);
         return securityManager;

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.mapper.AdminMapper">
+
+    <resultMap id="d1" type="Admin">
+        <id column="a_id" property="aId"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <collection property="role" ofType="Role" column="a_id" select="queryRole">
+        </collection>
+    </resultMap>
+
+    <resultMap id="d2" type="Role">
+        <id column="id" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <collection property="permissions" ofType="Permissions" column="id" select="querypermissions">
+        </collection>
+    </resultMap>
+
+    <resultMap id="d3" type="Permissions">
+        <id column="id" property="id"/>
+        <result column="permissions_name" property="permissionsName"/>
+    </resultMap>
+
+    <select id="queryAdmin" resultMap="d1">
+        select *
+        from admin
+        where name = #{adminName}
+    </select>
+
+    <select id="queryRole" resultMap="d2">
+        select r.*
+        from role r
+                 left join admin_role a
+                           on r.id = a.role_id
+        where a.ad_id = #{id}
+    </select>
+
+    <select id="querypermissions" resultMap="d3">
+        select p.*
+        from permissions p
+                 left join role_permissions r
+                           on p.id = r.permissions_id
+        where role_id = #{id}
+    </select>
+
+
+</mapper>

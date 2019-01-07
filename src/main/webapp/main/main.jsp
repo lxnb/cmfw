@@ -1,4 +1,5 @@
 ﻿<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -63,6 +64,22 @@
                 animate: true,
                 fit: true,
             })
+
+            $("#loginout").linkbutton({
+                    iconCls: "icon-01",
+                    onClick: function () {
+                        $.ajax({
+                            type: "post",
+                            url: "${pageContext.request.contextPath}/Admin/loginout",
+                            success: function (data) {
+                                if (data == "") {
+                                    location.href = "${pageContext.request.contextPath}/login.jsp"
+                                }
+                            }
+                        })
+                    }
+                }
+            )
         })
 
         //ajax异步请求获取列表
@@ -79,16 +96,31 @@
                             var ty = ii.iconcls;
                             bcd += "<p><a id=\"btn\" href=\"#\" class=\"easyui-linkbutton\" onclick=\"addTabs('" + ii.title + "','" + ii.iconcls + "','" + ii.url + "')\" data-options=\"iconCls:'" + ty + "'\">" + ii.title + "</a></p>";
                         })
-                        $("#aa").accordion("add", {
-                            title: item.title,
-                            iconCls: item.iconcls,
-                            content: bcd,
-                            selected: false
-                        })
+                        if (item.title == "轮播图") {
+                            <shiro:hasPermission name="banner:insert">
+                            $("#aa").accordion("add", {
+                                title: item.title,
+                                iconCls: item.iconcls,
+                                content: bcd,
+                                selected: false
+                            })
+                            </shiro:hasPermission>
+
+                        } else {
+                            $("#aa").accordion("add", {
+                                title: item.title,
+                                iconCls: item.iconcls,
+                                content: bcd,
+                                selected: false
+                            })
+                        }
+
+
                     })
                 }
             }
         })
+
 
         function addTabs(title, iconcls, url) {
             var a = $("#tt").tabs("exists", title)
@@ -113,10 +145,11 @@
     <div style="font-size: 24px;color: #FAF7F7;font-family: 楷体;font-weight: 900;width: 500px;float:left;padding-left: 20px;padding-top: 10px">
         持名法州后台管理系统
     </div>
-    <div style="font-size: 16px;color: #FAF7F7;font-family: 楷体;width: 300px;float:right;padding-top:15px">欢迎您:xxxxx
-        &nbsp;<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改密码</a>&nbsp;&nbsp;<a href="#"
-                                                                                                              class="easyui-linkbutton"
-                                                                                                              data-options="iconCls:'icon-01'">退出系统</a>
+    <div style="font-size: 16px;color: #FAF7F7;font-family: 楷体;width: 300px;float:right;padding-top:15px">
+        欢迎您:<shiro:principal></shiro:principal>
+        &nbsp;<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改密码</a>&nbsp;&nbsp;<a
+            id="loginout"
+    >退出系统</a>
     </div>
 </div>
 <div data-options="region:'south',split:true" style="height: 40px;background: #5C160C">
