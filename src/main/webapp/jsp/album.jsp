@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <script type="text/javascript">
     var album;
+    var searcher;
     var toolbar = [{
         iconCls: 'icon-help',
         text: "专辑详情",
@@ -9,8 +10,6 @@
             if (row != null) {
                 var bb = $("#album").treegrid("getLevel", row.id);
                 if (bb == 1) {
-                    /*album = row.id;
-                    $("#albumInformationdiv").dialog("open");*/
                     $.messager.alert(
                         row.title + "的详细信息",
                         "章节数量:" + row.count +
@@ -147,6 +146,27 @@
             modal: true,
             cache: false
         });
+
+        $('#searchbox').searchbox({
+            searcher: function (value, name) {
+                searcher = value;
+                var a = $("#tt").tabs("exists", "搜索页面")
+                if (a) {
+                    $("#tt").tabs("select", "搜索页面")
+                } else {
+                    $('#tt').tabs('add', {
+                            title: "搜索页面",
+                            iconCls: "icon-help",
+                            href: "${pageContext.request.contextPath}/jsp/SearcherIndex.jsp",
+                            selected: true,
+                            closable: true
+                        }
+                    )
+                }
+            },
+            menu: '#mm',
+            prompt: '请输入值'
+        });
     });
 </script>
 <div id="insertalbumdiv"></div>
@@ -161,7 +181,12 @@
         </audio>
     </div>
 </div>
+<input style="width:300px" id="searchbox"/>
+<div id="mm" style="width:150px">
+    <div data-options="name:'size'">按照大小</div>
+    <div data-options="name:'title',selected:true">按照名称</div>
+    <div data-options="name:'xxx'">按照XXX</div>
+</div>
 <table id="album">
 </table>
-
 

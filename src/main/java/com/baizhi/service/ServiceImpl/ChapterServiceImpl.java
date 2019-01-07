@@ -2,6 +2,7 @@ package com.baizhi.service.ServiceImpl;
 
 import com.baizhi.entity.Album;
 import com.baizhi.entity.Chapter;
+import com.baizhi.indexDao.LuceneProductDao;
 import com.baizhi.mapper.AlbumMapper;
 import com.baizhi.mapper.ChapterMapper;
 import com.baizhi.service.ChapterService;
@@ -25,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -35,6 +37,8 @@ public class ChapterServiceImpl implements ChapterService {
     private AlbumMapper mapper2;
     @Autowired
     FastFileStorageClient fastFileStorageClient;
+    @Autowired
+    LuceneProductDao luceneChapterDao;
 
     @Override
     public void insertChapter(HttpSession session, MultipartFile file, Chapter chapter) {
@@ -46,7 +50,7 @@ public class ChapterServiceImpl implements ChapterService {
             //类型转换
             file.transferTo(files);
             FileInputStream stream = new FileInputStream(files);
-            //计算时长
+            //计算大小
             long filesize = files.length();
             //提交至fastdfs
             StorePath storePath = fastFileStorageClient.uploadFile(stream, filesize, FilenameUtils.getExtension(file.getOriginalFilename()), null);
@@ -73,6 +77,7 @@ public class ChapterServiceImpl implements ChapterService {
             Album album = mapper2.selectByPrimaryKey(chapter.getAlbumId());
             album.setCount(album.getCount() + 1);
             mapper2.updateByPrimaryKey(album);
+            luceneChapterDao.createIndex(chapter);
             stream.close();
             files.deleteOnExit();
         } catch (IOException e) {
@@ -103,6 +108,12 @@ public class ChapterServiceImpl implements ChapterService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Chapter> queryChapter(String text) {
+        List<Chapter> list = luceneChapterDao.SearcherIndex(text);
+        return list;
     }
 
 

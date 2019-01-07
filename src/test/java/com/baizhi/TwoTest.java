@@ -32,7 +32,7 @@ public class TwoTest {
 
 
     @Test
-    public void Test1() {
+    public void test1() {
         List<Article> articles = mapper.queryMyGuruText(1);
         for (Article article : articles) {
             System.out.println(article);
@@ -40,7 +40,7 @@ public class TwoTest {
     }
 
     @Test
-    public void Test2() {
+    public void test2() {
         List<Article> articles = mapper.queryOtherGuruText(1);
         for (Article article : articles) {
             System.out.println(article);
@@ -49,7 +49,7 @@ public class TwoTest {
 
 
     @Test
-    public void Test3() {
+    public void test3() {
         List<Album> albums = mapper2.queryNewSixAlbum();
         for (Album album : albums) {
             System.out.println(album);
@@ -57,7 +57,7 @@ public class TwoTest {
     }
 
     @Test
-    public void Test4() {
+    public void test4() {
         List<Banner> banners = mapper3.queryFiveBanner();
         for (Banner banner : banners) {
             System.out.println(banner);
@@ -65,7 +65,7 @@ public class TwoTest {
     }
 
     @Test
-    public void Test5() {
+    public void test5() {
         List<Banner> banners = mapper3.selectAll();
         for (Banner banner : banners) {
             System.out.println(banner);
@@ -73,13 +73,13 @@ public class TwoTest {
     }
 
     @Test
-    public void Test6() {
+    public void test6() {
         Album album = mapper2.queryOneAlbum("aa");
         System.out.println(album);
     }
 
     @Test
-    public void Test7() {
+    public void test7() {
         Example example = new Example(User.class);
         example.createCriteria().andNotEqualTo("uId", 1);
         List<User> users = mapper4.selectByExample(example);

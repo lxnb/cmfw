@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("Chapter")
@@ -36,5 +37,12 @@ public class ChapterController {
             e.printStackTrace();
             return e.getMessage();
         }
+    }
+
+    @RequestMapping("queryChapter")
+    public List<Chapter> queryChapter(String test) {
+        System.out.println("传入值" + test);
+        List<Chapter> list = service.queryChapter(test);
+        return list;
     }
 }
